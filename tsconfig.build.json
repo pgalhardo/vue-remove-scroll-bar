@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.dev.json",
+    "compilerOptions": {
+      "composite": true,
+      "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.build.tsbuildinfo",
+
+      "lib": ["dom"],
+      "types": ["node"],
+      "rootDir": "src"
+    },
+    "exclude": [
+      ".storybook/*",
+      "src/**/__tests__/*"
+    ]
+  }

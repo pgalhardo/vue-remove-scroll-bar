@@ -1,0 +1,76 @@
+{
+  "name": "vue-remove-scroll-bar",
+  "version": "1.0.0",
+  "description": "Vue port of react-remove-scroll-bar",
+  "type": "module",
+  "author": "Pedro Galhardo <pgalhardo@me.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "vue",
+    "scroll"
+  ],
+  "main": "dist/index.umd.js",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "browser": "dist/index.umd.js",
+  "jsdelivr": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "run-p type-check \"build-only {@}\" --",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "lint:eslint": "eslint . --fix",
+    "lint": "run-s lint:*",
+    "format": "prettier --write src/",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.3",
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/test": "^8.4.7",
+    "@storybook/vue3": "^8.4.7",
+    "@storybook/vue3-vite": "^8.4.7",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.10.2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/eslint-config-prettier": "^10.1.0",
+    "@vue/eslint-config-typescript": "^14.1.3",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.14.0",
+    "eslint-plugin-oxlint": "^0.11.0",
+    "eslint-plugin-storybook": "^0.11.2",
+    "eslint-plugin-vue": "^9.30.0",
+    "npm-run-all2": "^7.0.1",
+    "oxlint": "^0.11.0",
+    "prettier": "^3.3.3",
+    "storybook": "^8.4.7",
+    "typescript": "~5.6.3",
+    "vite": "^6.0.5",
+    "vite-plugin-dts": "^4.4.0",
+    "vite-plugin-vue-devtools": "^7.6.8",
+    "vue-tsc": "^2.1.10"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.13"
+  },
+  "dependencies": {
+    "react-style-singleton": "^2.2.3"
+  }
+}
