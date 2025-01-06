@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed } from 'vue'
 import { stylesheetSingleton } from 'react-style-singleton'
+import { onMounted, onUnmounted } from 'vue'
+
 import {
-  lockAttribute,
   fullWidthClassName,
-  zeroRightClassName,
+  lockAttribute,
   noScrollbarsClassName,
   removedBarSizeVariable,
+  zeroRightClassName,
 } from './constants'
-import { type GapMode, getGapWidth } from './utils'
+import { type GapMode, type GapOffset, getGapWidth } from './utils'
 
 const Style = stylesheetSingleton()
 
@@ -29,61 +30,73 @@ const getCurrentUseCounter = (): number => {
   return isFinite(counter) ? counter : 0
 }
 
-const getStyles = computed(() => {
-  const gap = getGapWidth(props.gapMode)
-  const important = !props.noImportant ? '!important' : ''
-  const allowRelative = !props.noRelative
+// important tip - once we measure scrollBar width and remove them
+// we could not repeat this operation
+// thus we are using style-singleton - only the first "yet correct" style will be applied.
+const getStyles = (
+  { left, top, right, gap }: GapOffset,
+  allowRelative: boolean,
+  gapMode: GapMode = 'margin',
+  important: string,
+) => `
+  .${noScrollbarsClassName} {
+    overflow: hidden ${important};
+    padding-right: ${gap}px ${important};
+  }
+  body[${lockAttribute}] {
+    overflow: hidden ${important};
+    overscroll-behavior: contain;
+    ${[
+      allowRelative && `position: relative ${important};`,
+      gapMode === 'margin' &&
+        `
+    padding-left: ${left}px;
+    padding-top: ${top}px;
+    padding-right: ${right}px;
+    margin-left:0;
+    margin-top:0;
+    margin-right: ${gap}px ${important};
+    `,
+      gapMode === 'padding' && `padding-right: ${gap}px ${important};`,
+    ]
+      .filter(Boolean)
+      .join('')}
+  }
 
-  return `
-    .${noScrollbarsClassName} {
-      overflow: hidden ${important};
-      padding-right: ${gap.gap}px ${important};
-    }
-    body[${lockAttribute}] {
-      overflow: hidden ${important};
-      overscroll-behavior: contain;
-      ${[
-        allowRelative && `position: relative ${important};`,
-        props.gapMode === 'margin' &&
-          `
-        padding-left: ${gap.left}px;
-        padding-top: ${gap.top}px;
-        padding-right: ${gap.right}px;
-        margin-left:0;
-        margin-top:0;
-        margin-right: ${gap.gap}px ${important};
-        `,
-        props.gapMode === 'padding' && `padding-right: ${gap.gap}px ${important};`,
-      ]
-        .filter(Boolean)
-        .join('')}
-    }
+  .${zeroRightClassName} {
+    right: ${gap}px ${important};
+  }
 
-    .${zeroRightClassName} {
-      right: ${gap.gap}px ${important};
-    }
+  .${fullWidthClassName} {
+    margin-right: ${gap}px ${important};
+  }
 
-    .${fullWidthClassName} {
-      margin-right: ${gap.gap}px ${important};
-    }
+  .${zeroRightClassName} .${zeroRightClassName} {
+    right: 0 ${important};
+  }
 
-    .${zeroRightClassName} .${zeroRightClassName} {
-      right: 0 ${important};
-    }
+  .${fullWidthClassName} .${fullWidthClassName} {
+    margin-right: 0 ${important};
+  }
 
-    .${fullWidthClassName} .${fullWidthClassName} {
-      margin-right: 0 ${important};
-    }
-
-    body[${lockAttribute}] {
-      ${removedBarSizeVariable}: ${gap.gap}px;
-    }
-  `
-})
+  body[${lockAttribute}] {
+    ${removedBarSizeVariable}: ${gap}px;
+  }
+`
 
 onMounted(() => {
   document.body.setAttribute(lockAttribute, (getCurrentUseCounter() + 1).toString())
-  Style.add(getStyles.value)
+
+  /*
+   gap will be measured on every component mount
+   however it will be used only by the "first" invocation
+   due to singleton nature of <Style
+   */
+  const gap = getGapWidth(props.gapMode)
+
+  Style.add(
+    getStyles(gap, !props.noRelative, props.gapMode, !props.noImportant ? '!important' : ''),
+  )
 })
 
 onUnmounted(() => {
@@ -98,5 +111,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <slot />
+  <slot></slot>
 </template>
