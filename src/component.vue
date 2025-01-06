@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { stylesheetSingleton } from 'react-style-singleton'
 import { onMounted, onUnmounted } from 'vue'
 
 import {
@@ -9,9 +8,10 @@ import {
   removedBarSizeVariable,
   zeroRightClassName,
 } from './constants'
-import { type GapMode, type GapOffset, getGapWidth } from './utils'
+import { type GapMode, type GapOffset, getGapWidth } from './utils/gap'
+import { useStylesheet } from './utils/stylesheet'
 
-const Style = stylesheetSingleton()
+const Style = useStylesheet()
 
 export interface Props {
   noRelative?: boolean

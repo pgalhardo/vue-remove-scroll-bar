@@ -5,7 +5,7 @@ import {
   noScrollbarsClassName,
   removedBarSizeVariable,
 } from './constants'
-import { getGapWidth } from './utils'
+import { getGapWidth } from './utils/gap'
 
 export {
   RemoveScrollBar,
