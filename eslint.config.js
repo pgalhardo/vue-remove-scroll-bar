@@ -1,5 +1,6 @@
 import pluginVue from 'eslint-plugin-vue'
 import vueTsEslintConfig from '@vue/eslint-config-typescript'
+import pluginVitest from '@vitest/eslint-plugin'
 import oxlint from 'eslint-plugin-oxlint'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 import storybook from 'eslint-plugin-storybook'
@@ -18,6 +19,10 @@ export default [
   ...pluginVue.configs['flat/essential'],
   ...vueTsEslintConfig(),
 
+  {
+    ...pluginVitest.configs.recommended,
+    files: ['src/**/__tests__/*'],
+  },
   oxlint.configs['flat/recommended'],
   skipFormatting,
 
