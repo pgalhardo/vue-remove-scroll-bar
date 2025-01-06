@@ -1,6 +1,6 @@
 {
   "name": "vue-remove-scroll-bar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vue port of react-remove-scroll-bar",
   "type": "module",
   "author": "Pedro Galhardo <pgalhardo@me.com>",
