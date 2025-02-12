@@ -1,0 +1,34 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: ['config:recommended', 'schedule:weekly', 'group:allNonMajor'],
+  labels: ['dependencies'],
+  ignorePaths: ['**/__tests__/**'],
+  rangeStrategy: 'bump',
+  packageRules: [
+    {
+      matchDepTypes: ['peerDependencies'],
+      enabled: false,
+    },
+    {
+      groupName: 'storybook',
+      matchPackageNames: ['storybook', '@storybook{/,}**'],
+    },
+    {
+      groupName: 'test',
+      matchPackageNames: ['vitest', 'jsdom', '@vue/test-utils', '@types/jsdom', '@vitest{/,}**'],
+    },
+    {
+      groupName: 'build',
+      matchPackageNames: ['vite', 'vue-tsc', 'vite-plugin-**', '@vitejs{/,}**'],
+    },
+    {
+      groupName: 'lint',
+      matchPackageNames: ['oxlint', 'eslint{/,}**', 'prettier{/,}**', '@vue/eslint-config-**'],
+    },
+  ],
+  ignoreDeps: [
+    // manually bumping
+    'node',
+    'typescript',
+  ],
+}
